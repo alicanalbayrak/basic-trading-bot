@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FindBugsFilter>
+    <Match>
+        <!-- suppression for Lombok @RequiredArgsConstructor -->
+        <Class name="~.*"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+    </Match>
+</FindBugsFilter>
