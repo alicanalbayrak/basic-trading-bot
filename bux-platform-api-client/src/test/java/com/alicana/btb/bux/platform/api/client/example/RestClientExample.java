@@ -1,6 +1,6 @@
 package com.alicana.btb.bux.platform.api.client.example;
 
-import static com.alicana.btb.bux.platform.api.client.example.TestUtil.getToken;
+import static com.alicana.btb.bux.platform.api.client.example.ExampleUtil.getToken;
 
 import com.alicana.btb.bux.platform.api.client.BuxApiClientFactory;
 import com.alicana.btb.bux.platform.api.client.BuxApiRestClient;

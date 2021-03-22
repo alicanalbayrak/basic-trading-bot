@@ -31,7 +31,8 @@ public class BuxApiException extends RuntimeException implements Serializable {
   @Override
   public String getMessage() {
 
-    return getApiError().map(BuxRestError::message)
+    return getApiError()
+        .map(err -> String.format("Msg: %s, DevMsg: %s", err.message(), err.developerMessage()))
         .orElse(super.getMessage());
   }
 }

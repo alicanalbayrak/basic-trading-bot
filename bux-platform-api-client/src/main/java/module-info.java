@@ -14,8 +14,13 @@ module com.alicana.btb.bux.platform.api.client {
   requires okhttp3.logging;
   requires okio;
 
+  opens com.alicana.btb.bux.platform.api.client.adapter;
+  opens com.alicana.btb.bux.platform.api.client.config;
   opens com.alicana.btb.bux.platform.api.client.model;
   opens com.alicana.btb.bux.platform.api.client.serde;
+  opens com.alicana.btb.bux.platform.api.client.interceptor;
+  opens com.alicana.btb.bux.platform.api.client.exception;
+
 
   exports com.alicana.btb.bux.platform.api.client.model;
 }

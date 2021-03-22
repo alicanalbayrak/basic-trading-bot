@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.alicana.btb.bux.platform.api.client.model.BuxDomainEvent;
 import com.alicana.btb.bux.platform.api.client.model.BuxSubscription;
 import com.alicana.btb.bux.platform.api.client.model.ConnectedEvent;
+import com.alicana.btb.bux.platform.api.client.model.FailureEvent;
 import com.alicana.btb.bux.platform.api.client.model.QuoteEvent;
 import com.alicana.btb.bux.platform.api.client.model.UnknownEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -114,4 +115,39 @@ class BuxDomainEventDeserializerTest {
     assertThat(buxSubscription.subscribeTo()).contains("TRADING.PRODUCT.SB26493");
     assertThat(buxSubscription.unsubscribeFrom()).hasSize(0);
   }
+
+  @Test
+  void shouldReturnUnknownEvent_whenInvalidJsonProvided() throws JsonProcessingException {
+
+    String json = """
+        {
+          "someOtherField":["TRADING.PRODUCT.SB26493"],
+          "unsubscribeFrom":[]
+        }
+        """;
+
+    BuxDomainEvent result = objectMapper.readValue(json, BuxDomainEvent.class);
+    assertThat(result).isExactlyInstanceOf(UnknownEvent.class);
+  }
+
+  @Test
+  void shouldReturnFailedEvent() throws JsonProcessingException {
+
+    String json = """
+        {
+          "t": "connect.failed",
+          "body": {
+              "developerMessage": "Missing JWT Access Token in request",
+              "errorCode": "RTF_002"
+          }
+        }
+        """;
+
+    BuxDomainEvent result = objectMapper.readValue(json, BuxDomainEvent.class);
+    assertThat(result).isExactlyInstanceOf(FailureEvent.class);
+    FailureEvent failureEvent = (FailureEvent) result;
+    assertThat(failureEvent.developerMessage()).isEqualTo("Missing JWT Access Token in request");
+    assertThat(failureEvent.errorCode()).isEqualTo("RTF_002");
+  }
+
 }

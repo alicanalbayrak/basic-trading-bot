@@ -1,8 +1,8 @@
 package com.alicana.btb.bux.platform.api.client.example;
 
-public class TestUtil {
+public class ExampleUtil {
 
-  private TestUtil() {
+  private ExampleUtil() {
 
   }
 
