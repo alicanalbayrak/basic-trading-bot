@@ -2,10 +2,10 @@ package com.alicana.btb.bux.platform.api.client.serde;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.alicana.btb.bux.platform.api.client.model.BuxSubscription;
-import com.alicana.btb.bux.platform.api.client.model.QuoteEvent;
 import com.alicana.btb.bux.platform.api.client.model.BuxDomainEvent;
+import com.alicana.btb.bux.platform.api.client.model.BuxSubscription;
 import com.alicana.btb.bux.platform.api.client.model.ConnectedEvent;
+import com.alicana.btb.bux.platform.api.client.model.QuoteEvent;
 import com.alicana.btb.bux.platform.api.client.model.UnknownEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

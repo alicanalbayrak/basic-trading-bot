@@ -9,9 +9,7 @@ import com.alicana.btb.bux.platform.api.client.model.BuxDomainEvent;
 import com.alicana.btb.bux.platform.api.client.serde.BuxDomainEventDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.processors.PublishProcessor;
 import java.io.Closeable;
 import java.io.IOException;
@@ -78,11 +76,11 @@ public class BuxApiWebSocketClientImpl implements BuxApiWebSocketClient, Closeab
         .replay(1)
         .autoConnect();
 
+    // @NonNull Disposable outgoingMessagesDisposible =
     // TODO Wrap around Closeable
-    @NonNull Disposable outgoingMessagesDisposible =
-        socketConnection.ofType(SendCapable.class)
-            .switchMap(state -> outgoingMessageProcessor.doOnNext(state::send))
-            .subscribe();
+    socketConnection.ofType(SendCapable.class)
+        .switchMap(state -> outgoingMessageProcessor.doOnNext(state::send))
+        .subscribe();
   }
 
   @Override

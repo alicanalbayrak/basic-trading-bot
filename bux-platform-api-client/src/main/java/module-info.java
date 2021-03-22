@@ -11,6 +11,7 @@ module com.alicana.btb.bux.platform.api.client {
   requires retrofit2;
   requires retrofit2.converter.jackson;
   requires okhttp3;
+  requires okhttp3.logging;
   requires okio;
 
   opens com.alicana.btb.bux.platform.api.client.model;

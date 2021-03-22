@@ -1,12 +1,12 @@
 package com.alicana.btb.bux.platform.api.client.adapter.impl;
 
-import com.alicana.btb.bux.platform.api.client.exception.SocketStateException;
 import com.alicana.btb.bux.platform.api.client.adapter.ReactiveWebSocketListener;
 import com.alicana.btb.bux.platform.api.client.adapter.state.Connected;
 import com.alicana.btb.bux.platform.api.client.adapter.state.Connecting;
 import com.alicana.btb.bux.platform.api.client.adapter.state.Disconnected;
 import com.alicana.btb.bux.platform.api.client.adapter.state.Disconnecting;
 import com.alicana.btb.bux.platform.api.client.adapter.state.SocketState;
+import com.alicana.btb.bux.platform.api.client.exception.SocketStateException;
 import io.reactivex.rxjava3.core.FlowableEmitter;
 import io.reactivex.rxjava3.processors.PublishProcessor;
 import okhttp3.Response;

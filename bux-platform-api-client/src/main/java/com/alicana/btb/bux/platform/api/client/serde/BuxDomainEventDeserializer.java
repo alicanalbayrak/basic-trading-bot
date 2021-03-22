@@ -1,11 +1,11 @@
 package com.alicana.btb.bux.platform.api.client.serde;
 
+import com.alicana.btb.bux.platform.api.client.model.BuxDomainEvent;
 import com.alicana.btb.bux.platform.api.client.model.BuxSubscription;
 import com.alicana.btb.bux.platform.api.client.model.ConnectedEvent;
 import com.alicana.btb.bux.platform.api.client.model.FailureEvent;
 import com.alicana.btb.bux.platform.api.client.model.QuoteEvent;
 import com.alicana.btb.bux.platform.api.client.model.UnknownEvent;
-import com.alicana.btb.bux.platform.api.client.model.BuxDomainEvent;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

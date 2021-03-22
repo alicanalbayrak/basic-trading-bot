@@ -22,10 +22,12 @@
         <version.com.puppycrawl.tools>8.41</version.com.puppycrawl.tools>
         <version.maven-enforcer-plugin>3.0.0-M2</version.maven-enforcer-plugin>
         <version.spotbugs-maven-plugin>4.2.0</version.spotbugs-maven-plugin>
+        <version.com.github.spotbugs>4.2.2</version.com.github.spotbugs>
         <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
         <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
         <!-- dependency versions -->
         <version.com.squareup.retrofit2>2.9.0</version.com.squareup.retrofit2>
+        <version.com.squareup.okhttp3>3.14.9</version.com.squareup.okhttp3>
         <version.joda-time>2.10.10</version.joda-time>
         <version.io.reactivex.rxjava3>3.0.11</version.io.reactivex.rxjava3>
         <version.org.slf4j.slf4j-api>1.7.30</version.org.slf4j.slf4j-api>
@@ -49,6 +51,11 @@
                 <groupId>com.squareup.retrofit2</groupId>
                 <artifactId>converter-jackson</artifactId>
                 <version>${version.com.squareup.retrofit2}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>logging-interceptor</artifactId>
+                <version>${version.com.squareup.okhttp3}</version>
             </dependency>
             <dependency>
                 <groupId>joda-time</groupId>
@@ -128,13 +135,20 @@
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
                     <version>${version.spotbugs-maven-plugin}</version>
+                    <dependencies>
+                        <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+                        <dependency>
+                            <groupId>com.github.spotbugs</groupId>
+                            <artifactId>spotbugs</artifactId>
+                            <version>${version.com.github.spotbugs}</version>
+                        </dependency>
+                    </dependencies>
                     <configuration>
                         <effort>Max</effort>
                         <failOnError>true</failOnError>
                         <threshold>Low</threshold>
                         <xmlOutput>true</xmlOutput>
-                        <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs
-                        </spotbugsXmlOutputDirectory>
+                        <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
                         <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
                     </configuration>
                     <executions>

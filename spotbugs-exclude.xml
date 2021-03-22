@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <FindBugsFilter>
+
+    <!-- Disabled check for serializable fields in exception classes
+    Rationale: no need to serialize/deserialize exceptions.-->
     <Match>
-        <!-- suppression for Lombok @RequiredArgsConstructor -->
-        <Class name="~.*"/>
-        <Bug pattern="URF_UNREAD_FIELD"/>
+        <Package name="~com\.alicana.*\.client\.exception.*"/>
+        <Bug pattern="SE_BAD_FIELD"/>
     </Match>
+
+    <!--  spotbugs is not ready for Java records.-->
+    <Match>
+        <Class name="~com\.alicana.*\.client\.model.*"/>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
+
+    <!--  spotbugs is not ready for Java records.-->
+    <Match>
+        <Class name="~com\.alicana.*\.client\.adapter\.state.*"/>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
+
+    <!--  spotbugs is not ready for Java records.-->
+    <Match>
+        <Class name="~com\.alicana.*\.client.*AuthenticationInterceptor"/>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
+
+    <!--  spotbugs is not ready for Java records.-->
+    <Match>
+        <Class name="~com\.alicana.*\.client.*BuxApiConfig"/>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
+
+    <!-- nullable interface parameter when creating converter factory -->
+    <Match>
+        <Class name="~com\.alicana.*\.client.*BuxApiServiceGenerator"/>
+        <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+    </Match>
+
 </FindBugsFilter>

@@ -3,15 +3,19 @@ package com.alicana.btb.bux.platform.api.client;
 
 import com.alicana.btb.bux.platform.api.client.config.BuxApiConfig;
 import com.alicana.btb.bux.platform.api.client.interceptor.AuthenticationInterceptor;
-import com.alicana.btb.bux.platform.api.client.interceptor.LoggingInterceptor;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A factory for creating BuxApi client objects.
  */
 public class BuxApiClientFactory {
+
+  private static final Logger log = LoggerFactory.getLogger(BuxApiClientFactory.class);
 
   /**
    * The Bux API connection configurations.
@@ -64,15 +68,19 @@ public class BuxApiClientFactory {
    * @return OkHttp client
    */
   private OkHttpClient createHttpClient(final String authToken) {
-    Dispatcher dispatcher = new Dispatcher();
+
+    final Dispatcher dispatcher = new Dispatcher();
     dispatcher.setMaxRequestsPerHost(500);
     dispatcher.setMaxRequests(500);
+
+    final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
     return new OkHttpClient.Builder()
         .dispatcher(dispatcher)
         .pingInterval(20, TimeUnit.SECONDS)
-        .addInterceptor(new LoggingInterceptor())
         .addInterceptor(new AuthenticationInterceptor(authToken))
+        .addInterceptor(loggingInterceptor)
         .build();
   }
 
