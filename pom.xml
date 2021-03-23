@@ -112,6 +112,12 @@
                 <version>3.8.0</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>mockwebserver</artifactId>
+                <version>${version.com.squareup.okhttp3}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -239,14 +245,20 @@
                     </configuration>
                     <executions>
                         <execution>
-                            <id>default-tests</id>
+                            <id>default-test</id>
+                            <configuration>
+                                <skipTests>true</skipTests>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>unit-tests</id>
                             <phase>test</phase>
                             <goals>
                                 <goal>test</goal>
                             </goals>
                             <configuration>
                                 <includes>
-                                    <include>%regex[.*Test.*]</include>
+                                    <include>**/*Test.java</include>
                                 </includes>
                             </configuration>
                         </execution>

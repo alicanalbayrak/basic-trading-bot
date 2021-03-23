@@ -1,8 +1,8 @@
-package com.alicana.btb.bux.platform.api.client.example;
+package com.alicana.btb.bux.platform.api.client.util;
 
-public class ExampleUtil {
+public class AuthorizationTestTokenProvider {
 
-  private ExampleUtil() {
+  private AuthorizationTestTokenProvider() {
 
   }
 

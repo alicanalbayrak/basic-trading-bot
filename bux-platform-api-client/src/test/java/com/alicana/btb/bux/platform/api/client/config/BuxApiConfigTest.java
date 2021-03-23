@@ -1,6 +1,6 @@
 package com.alicana.btb.bux.platform.api.client.config;
 
-import static com.alicana.btb.bux.platform.api.client.example.ExampleUtil.getToken;
+import static com.alicana.btb.bux.platform.api.client.util.AuthorizationTestTokenProvider.getToken;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import org.junit.jupiter.api.Test;

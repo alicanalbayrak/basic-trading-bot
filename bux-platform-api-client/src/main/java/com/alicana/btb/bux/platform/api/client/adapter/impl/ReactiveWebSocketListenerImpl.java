@@ -12,6 +12,8 @@ import io.reactivex.rxjava3.processors.PublishProcessor;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okio.ByteString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Reactive wrapper implementation for {@link ReactiveWebSocketListener}.
@@ -19,6 +21,8 @@ import okio.ByteString;
  * and deliver webSocket messages accordingly.
  */
 public class ReactiveWebSocketListenerImpl extends ReactiveWebSocketListener {
+
+  private static final Logger log = LoggerFactory.getLogger(ReactiveWebSocketListenerImpl.class);
 
   private final FlowableEmitter<SocketState> socketStateEmitter;
   private final PublishProcessor<String> textMsgPublisher;

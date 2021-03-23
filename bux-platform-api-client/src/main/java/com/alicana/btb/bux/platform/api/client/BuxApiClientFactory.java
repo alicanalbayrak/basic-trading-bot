@@ -7,15 +7,11 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A factory for creating BuxApi client objects.
  */
 public class BuxApiClientFactory {
-
-  private static final Logger log = LoggerFactory.getLogger(BuxApiClientFactory.class);
 
   /**
    * The Bux API connection configurations.
