@@ -23,6 +23,7 @@ module com.alicana.btb.bux.platform.api.client {
   opens com.alicana.btb.bux.platform.api.client.interceptor;
   opens com.alicana.btb.bux.platform.api.client.exception;
 
-
+  exports com.alicana.btb.bux.platform.api.client;
+  exports com.alicana.btb.bux.platform.api.client.config;
   exports com.alicana.btb.bux.platform.api.client.model;
 }
