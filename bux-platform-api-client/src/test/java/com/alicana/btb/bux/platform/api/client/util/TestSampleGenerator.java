@@ -18,7 +18,7 @@ public class TestSampleGenerator {
                                           final TradeType tradeType) {
 
     BigMoney mockBigMoney = new BigMoney("BUX", 2, new BigDecimal("12.2"));
-    Product product = new Product("securityId", "symbol", "display", mockBigMoney, mockBigMoney);
+    Product product = new Product("securityId", "symbol", "display");
     return new Trade("id", uuid, mockBigMoney, product, mockBigMoney, mockBigMoney, 1,
         tradeDirection, tradeType);
   }

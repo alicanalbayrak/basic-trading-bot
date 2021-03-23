@@ -95,7 +95,6 @@ class BuxDomainEventDeserializerTest {
     BuxDomainEvent result = objectMapper.readValue(json, BuxDomainEvent.class);
 
     assertThat(result).isExactlyInstanceOf(UnknownEvent.class);
-    System.out.println(result);
   }
 
   @Test

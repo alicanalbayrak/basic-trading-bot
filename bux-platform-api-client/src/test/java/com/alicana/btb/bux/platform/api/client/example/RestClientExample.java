@@ -29,10 +29,10 @@ public class RestClientExample {
     BuxApiRestClient buxRestClient =
         BuxApiClientFactory.newInstance(config).newRestClient();
 
-    BigMoney bm = new BigMoney("BUX", 2, new BigDecimal(12));
-    Source source = new Source("sourceType", "sourceId");
+    BigMoney bm = new BigMoney("BUX", 2, new BigDecimal("10.00"));
+    Source source = new Source("OTHER", null);
 
-    OpenPosition openPos = new OpenPosition("sb26493", bm, 1, TradeDirection.BUY, source);
+    OpenPosition openPos = new OpenPosition("sb26493", bm, 2, TradeDirection.BUY, source);
 
     Trade openReqResult = buxRestClient.openPosition(openPos);
     log.info(openPos.toString());

@@ -43,11 +43,13 @@ public class ReactiveWebSocketListenerImpl extends ReactiveWebSocketListener {
 
   @Override
   public void onCreate(WebSocket webSocket) {
+    log.info("Reactive web socket listener created.");
     socketStateEmitter.onNext(new Connecting(webSocket));
   }
 
   @Override
   public void onOpen(WebSocket webSocket, Response response) {
+    log.info("WebSocket is opened");
     super.onOpen(webSocket, response);
     socketStateEmitter.onNext(new Connected(webSocket, textMsgPublisher));
   }
@@ -65,19 +67,22 @@ public class ReactiveWebSocketListenerImpl extends ReactiveWebSocketListener {
   }
 
   @Override
-  public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-    super.onFailure(webSocket, t, response);
-    socketStateEmitter.tryOnError(new SocketStateException(t, response));
+  public void onFailure(WebSocket webSocket, Throwable throwable, Response response) {
+    log.error("WebSocket failure!", throwable);
+    super.onFailure(webSocket, throwable, response);
+    socketStateEmitter.tryOnError(new SocketStateException(throwable, response));
   }
 
   @Override
   public void onClosing(WebSocket webSocket, int code, String reason) {
+    log.info("Closing webSocket...");
     super.onClosing(webSocket, code, reason);
     socketStateEmitter.onNext(new Disconnecting());
   }
 
   @Override
   public void onClosed(WebSocket webSocket, int code, String reason) {
+    log.info("WebSocket closed...");
     super.onClosed(webSocket, code, reason);
     socketStateEmitter.onNext(new Disconnected());
     socketStateEmitter.onComplete();

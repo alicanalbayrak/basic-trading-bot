@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A factory for creating BuxApi client objects.
@@ -69,8 +71,10 @@ public class BuxApiClientFactory {
     dispatcher.setMaxRequestsPerHost(500);
     dispatcher.setMaxRequests(500);
 
-    final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+    final Logger logger = LoggerFactory.getLogger(OkHttpClient.class);
+
+    final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(logger::info);
+    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
     return new OkHttpClient.Builder()
         .dispatcher(dispatcher)

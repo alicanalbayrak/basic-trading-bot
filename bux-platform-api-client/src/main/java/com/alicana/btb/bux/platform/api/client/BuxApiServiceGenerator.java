@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Response;
@@ -18,6 +19,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Generates a Bux API implementation based on @see {@link BuxApiRestService}.
  */
 public class BuxApiServiceGenerator {
+
+  private static final Logger log = LoggerFactory.getLogger(BuxApiServiceGenerator.class);
 
   private static final JacksonConverterFactory converterFactory = JacksonConverterFactory.create();
 
@@ -37,12 +40,10 @@ public class BuxApiServiceGenerator {
                                     final OkHttpClient sharedClient,
                                     final BuxApiConfig buxApiConfig) {
 
+    log.info("Generating REST client...");
     final Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
         .baseUrl(buxApiConfig.restUrl())
         .addConverterFactory(converterFactory);
-
-    final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
     final OkHttpClient httpClient = sharedClient.newBuilder()
         .build();
@@ -62,11 +63,12 @@ public class BuxApiServiceGenerator {
       if (response.isSuccessful()) {
         return response.body();
       } else {
-        System.out.println(response.errorBody());
+        log.error("Request is not successful. Error raw:{}", response.errorBody().toString());
         BuxRestError apiError = getBuxApiError(response);
         throw new BuxApiException(apiError);
       }
     } catch (IOException e) {
+      log.error("Something went wrong while executing HTTP request.", e);
       throw new BuxApiException(e);
     }
   }

@@ -11,7 +11,5 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record Product(@JsonProperty("securityId") String securityId,
                       @JsonProperty("symbol") String symbol,
-                      @JsonProperty("displayName") String displayName,
-                      @JsonProperty("currentPrice") BigMoney currentPrice,
-                      @JsonProperty("closingPrice") BigMoney closingPrice) {
+                      @JsonProperty("displayName") String displayName) {
 }

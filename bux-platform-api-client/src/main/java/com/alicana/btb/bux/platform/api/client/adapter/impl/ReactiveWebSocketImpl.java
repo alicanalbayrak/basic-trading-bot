@@ -33,7 +33,9 @@ public class ReactiveWebSocketImpl implements ReactiveWebSocket {
 
     return Flowable.create(this::openSocketAndListen, BackpressureStrategy.LATEST)
         .doFinally(() -> {
-          // TODO LOG signal
+
+          log.info("End signal received. Closing WebSocket connection.");
+
           if (webSocket != null) {
             // TODO hard-coded!
             webSocket.close(1000, "close");

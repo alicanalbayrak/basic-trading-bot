@@ -12,11 +12,16 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Deserializes BUX API WebSocket events.
  */
 public class BuxDomainEventDeserializer extends JsonDeserializer<BuxDomainEvent> {
+
+  private final static Logger log = LoggerFactory.getLogger(BuxDomainEventDeserializer.class);
+
   @Override
   public BuxDomainEvent deserialize(JsonParser jsonParser,
                                     DeserializationContext deserializationContext)
@@ -29,6 +34,9 @@ public class BuxDomainEventDeserializer extends JsonDeserializer<BuxDomainEvent>
       if (rootNode.has("subscribeTo") || rootNode.has("SUBSCRIBETO")) {
         return mapper.readValue(rootNode.toString(), BuxSubscription.class);
       }
+
+      log.warn("Received event from WebSocket but cannot infer the type of the event. Event: {}",
+          rootNode);
       return new UnknownEvent(rootNode.toString());
     }
 

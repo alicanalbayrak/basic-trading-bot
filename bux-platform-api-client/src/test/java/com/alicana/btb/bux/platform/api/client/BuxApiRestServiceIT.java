@@ -12,26 +12,30 @@ import com.alicana.btb.bux.platform.api.client.model.TradeDirection;
 import com.alicana.btb.bux.platform.api.client.util.MockDispatcher;
 import java.io.IOException;
 import java.math.BigDecimal;
-import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class BuxApiRestServiceIT {
 
+  private static final Logger log = LoggerFactory.getLogger(BuxApiRestServiceIT.class);
+
   private MockWebServer server;
-  private HttpUrl baseUrl;
   private BuxApiRestClient buxRestClient;
 
   @BeforeEach
   void setUp() throws IOException {
+
     this.server = new MockWebServer();
     this.server.start();
-    this.baseUrl = server.url("core/21/");
 
+    final String restUrl = server.url("core/21/").toString();
     final String wsUrl = "ws://localhost:8080/subscriptions/me";
     final String authToken = getToken();
-    var config = new BuxApiConfig(wsUrl, baseUrl.toString(), authToken);
+
+    var config = new BuxApiConfig(wsUrl, restUrl, authToken);
     this.buxRestClient = BuxApiClientFactory.newInstance(config).newRestClient();
   }
 
@@ -47,13 +51,11 @@ class BuxApiRestServiceIT {
     OpenPosition openPos = new OpenPosition("sb26493", bm, 1, TradeDirection.BUY, source);
 
     Trade openReqResult = buxRestClient.openPosition(openPos);
-    System.out.println(openReqResult);
+    log.info(openReqResult.toString());
     assertThat(openReqResult.direction()).isEqualTo(TradeDirection.BUY);
 
     Trade closeRequestResult = buxRestClient.closePosition(openReqResult.positionId());
-    System.out.println(closeRequestResult);
-
+    log.info(closeRequestResult.toString());
   }
-
 
 }
