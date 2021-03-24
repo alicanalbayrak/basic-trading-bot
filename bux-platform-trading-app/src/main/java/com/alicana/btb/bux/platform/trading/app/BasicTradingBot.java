@@ -1,14 +1,17 @@
 package com.alicana.btb.bux.platform.trading.app;
 
 import com.alicana.btb.bux.platform.api.client.BuxApiClientFactory;
+import com.alicana.btb.bux.platform.api.client.BuxApiRestClient;
 import com.alicana.btb.bux.platform.api.client.BuxApiWebSocketClient;
 import com.alicana.btb.bux.platform.api.client.config.BuxApiConfig;
 import com.alicana.btb.bux.platform.trading.app.config.BuxApiClientConfigurationProvider;
 import com.alicana.btb.bux.platform.trading.app.exception.TradingBotException;
 import com.alicana.btb.bux.platform.trading.app.model.TradingBotInputParams;
 import com.alicana.btb.bux.platform.trading.app.service.MarketDataStreamingService;
+import com.alicana.btb.bux.platform.trading.app.service.TradeService;
 import com.alicana.btb.bux.platform.trading.app.service.TradeStrategy;
 import com.alicana.btb.bux.platform.trading.app.service.impl.BuxMarketDataStreamingServiceImpl;
+import com.alicana.btb.bux.platform.trading.app.service.impl.BuxTradeServiceImpl;
 import com.alicana.btb.bux.platform.trading.app.service.impl.SimpleTradeStrategy;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,14 +59,16 @@ public record BasicTradingBot(TradingBotInputParams tradingBotInputParams) {
     BuxApiWebSocketClient webSocketClient =
         BuxApiClientFactory.newInstance(buxApiConfig).newWebSocketClient();
 
-    TradeStrategy tradeStrategy = new SimpleTradeStrategy(tradingBotInputParams, null);
+    BuxApiRestClient restClient =
+        BuxApiClientFactory.newInstance(buxApiConfig).newRestClient();
 
+    TradeService tradeService = new BuxTradeServiceImpl(restClient);
+    TradeStrategy tradeStrategy = new SimpleTradeStrategy(tradingBotInputParams, tradeService);
     MarketDataStreamingService marketDataStreamingService =
         new BuxMarketDataStreamingServiceImpl(webSocketClient, tradeStrategy);
 
     CompletableFuture<Void> future =
         marketDataStreamingService.startMarketDataStream(tradingBotInputParams().productId());
-
     future.get();
   }
 

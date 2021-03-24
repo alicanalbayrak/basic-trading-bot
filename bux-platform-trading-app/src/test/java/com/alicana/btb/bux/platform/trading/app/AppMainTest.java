@@ -48,7 +48,7 @@ class AppMainTest {
   void shouldExecuteSuccessfully() {
 
     final String inputJson = """
-        { "productId":"sb26493", "buyPrice": 17.203, "upperSellLimit": 20.000,"lowerSellLimit":15.000}
+        { "productId":"sb26502", "buyPrice": "1.18231", "upperSellLimit": "1.18242", "lowerSellLimit": "1.18230" }
         """;
 
     AppMain.main(new String[] {inputJson});

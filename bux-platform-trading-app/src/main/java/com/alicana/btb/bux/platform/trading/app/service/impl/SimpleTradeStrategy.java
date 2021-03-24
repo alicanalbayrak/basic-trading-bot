@@ -1,7 +1,6 @@
 package com.alicana.btb.bux.platform.trading.app.service.impl;
 
 import com.alicana.btb.bux.platform.api.client.model.QuoteEvent;
-import com.alicana.btb.bux.platform.api.client.model.Trade;
 import com.alicana.btb.bux.platform.trading.app.model.TradingBotInputParams;
 import com.alicana.btb.bux.platform.trading.app.service.TradeService;
 import com.alicana.btb.bux.platform.trading.app.service.TradeStrategy;
@@ -67,8 +66,7 @@ public class SimpleTradeStrategy implements TradeStrategy {
 
         log.info("Price hit! Closing position. Current={}, Lower={}, Upper={}", currentPrice,
             lowerSellLimit, upperSellLimit);
-        Trade tradeResult = tradeService.closePosition(this.positionId);
-        log.info(tradeResult.toString());
+        tradeService.closePosition(this.positionId);
         this.isSequenceExecuted.set(true);
       }
     }

@@ -9,7 +9,6 @@ import com.alicana.btb.bux.platform.api.client.model.QuoteEvent;
 import com.alicana.btb.bux.platform.api.client.model.UnknownEvent;
 import com.alicana.btb.bux.platform.trading.app.service.MarketDataStreamingService;
 import com.alicana.btb.bux.platform.trading.app.service.TradeStrategy;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -52,7 +51,11 @@ public class BuxMarketDataStreamingServiceImpl implements MarketDataStreamingSer
     this.productId = productId;
     this.webSocketClientDisposable = buxApiWebSocketClient.observeMessages()
         .observeOn(Schedulers.single())
-        .subscribe(this::handleBuxDomainEvent);
+        .subscribe(this::handleBuxDomainEvent,
+            throwable -> {
+              log.error("An error occurred while processing events", throwable);
+              stopMarketDataStream();
+            });
 
     this.completableFuture = new CompletableFuture<>();
     return completableFuture;
@@ -63,6 +66,8 @@ public class BuxMarketDataStreamingServiceImpl implements MarketDataStreamingSer
     if (webSocketClientDisposable != null && !webSocketClientDisposable.isDisposed()) {
       webSocketClientDisposable.dispose();
     }
+
+    this.completableFuture.complete(null);
   }
 
   private void handleBuxDomainEvent(final BuxDomainEvent event) {
@@ -89,7 +94,7 @@ public class BuxMarketDataStreamingServiceImpl implements MarketDataStreamingSer
 
     try {
       buxApiWebSocketClient.sendMessage(objectMapper.writeValueAsString(subs));
-    } catch (JsonProcessingException e) {
+    } catch (Exception e) {
       log.error("An exception occurred while serializing bux subscription.", e);
       stopMarketDataStream();
     }
@@ -100,6 +105,13 @@ public class BuxMarketDataStreamingServiceImpl implements MarketDataStreamingSer
   }
 
   private void handleQuoteEvent(final QuoteEvent quoteEvent) {
+
+    if (tradeStrategy.isFinished()) {
+      log.info("Trade execution finished. Stopping market data stream.");
+      stopMarketDataStream();
+      return;
+    }
+
     log.info(quoteEvent.toString());
     tradeStrategy.onQuoteEvent(quoteEvent);
   }

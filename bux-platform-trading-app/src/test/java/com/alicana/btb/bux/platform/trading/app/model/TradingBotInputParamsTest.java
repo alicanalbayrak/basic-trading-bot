@@ -50,7 +50,7 @@ class TradingBotInputParamsTest {
   }
 
   @Test
-  void testTradingBotInputParamsValidation() throws JsonProcessingException {
+  void testTradingBotInputParamsValidation() {
 
     TradingBotInputParams buyPriceEqualUpperLimit =
         new TradingBotInputParams("x", new BigDecimal("12"),
