@@ -38,4 +38,22 @@
         <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
     </Match>
 
+    <!--  spotbugs is not ready for Java records.-->
+    <Match>
+        <Class name="~com\.alicana.*\.app.*TradingBotInputParams"/>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
+
+    <!--  spotbugs is not ready for Java records.-->
+    <Match>
+        <Class name="~com\.alicana.*\.app.*BasicTradingBot"/>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
+
+    <!--  spotbugs is not ready for Java records.-->
+    <Match>
+        <Class name="~com\.alicana.*\.app.*TradeCompletedEvent"/>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
+
 </FindBugsFilter>
