@@ -9,6 +9,8 @@ prices and execute a sell order when a certain price is hit.
 - bux-api-platform-api-client: Implements BUX platform client abstractions and webSocket connection protocol.
 - bux-platform-trading-app: Trading orchestration.
 
+![simple overview image](./docs/simple-overview.png "Simple Execution Overview")
+
 ### Build
 
 #### Pre-requisites
