@@ -1,11 +1,15 @@
+os: linux
+
+dist: focal
+
 language: java
-sudo: false
 
 jdk:
     - openjdk16
 
 cache:
     directories:
+        - .autoconf
         - $HOME/.m2
 
 install: true
