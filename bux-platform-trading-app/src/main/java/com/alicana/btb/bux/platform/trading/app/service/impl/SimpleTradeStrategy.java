@@ -51,10 +51,9 @@ public class SimpleTradeStrategy implements TradeStrategy {
     if (Optional.ofNullable(positionId).isEmpty()) {
 
       BigDecimal buyPrice = tradingBotInputParams.buyPrice();
-      // TODO CLARIFY !
-      //  not sure if should be exactly same price ?
       if (currentPrice.compareTo(buyPrice) <= 0) {
-        this.positionId = tradeService.openPosition(tradingBotInputParams.productId(), buyPrice);
+        this.positionId =
+            tradeService.openPosition(tradingBotInputParams.productId(), currentPrice);
       }
     } else {
 

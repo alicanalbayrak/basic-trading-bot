@@ -42,7 +42,7 @@ public class BuxTradeServiceImpl implements TradeService {
   public Trade closePosition(String positionId) {
 
     Trade result = buxApiRestClient.closePosition(positionId);
-    log.info("Close position result: {}", result);
+    log.info("Close position result: {}", result.profitAndLoss());
     return result;
   }
 
