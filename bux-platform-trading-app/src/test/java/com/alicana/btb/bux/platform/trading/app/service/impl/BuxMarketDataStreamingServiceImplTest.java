@@ -3,12 +3,10 @@ package com.alicana.btb.bux.platform.trading.app.service.impl;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atMostOnce;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,8 +19,6 @@ import com.alicana.btb.bux.platform.api.client.model.UnknownEvent;
 import com.alicana.btb.bux.platform.trading.app.service.MarketDataStreamingService;
 import com.alicana.btb.bux.platform.trading.app.service.TradeStrategy;
 import io.reactivex.rxjava3.core.Flowable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -43,7 +39,7 @@ class BuxMarketDataStreamingServiceImplTest {
   }
 
   @Test
-  void shouldHandleConnectedEventSuccessfully() throws ExecutionException, InterruptedException {
+  void shouldHandleConnectedEventSuccessfully() {
 
     // GIVEN
     String productId = "productId";
@@ -51,26 +47,17 @@ class BuxMarketDataStreamingServiceImplTest {
 
     // WHEN
     when(buxWebSocketClientMock.observeMessages()).thenReturn(Flowable.just(event));
-    doAnswer(invocationOnMock -> {
-      marketDataStreamingService.stopMarketDataStream();
-      return null;
-    }).when(buxWebSocketClientMock).sendMessage(anyString());
 
-    CompletableFuture<Void> completableFuture =
-        marketDataStreamingService.startMarketDataStream(productId);
-
-    completableFuture.get();
+    marketDataStreamingService.startMarketDataStream(productId);
 
     // THEN
     ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-    verify(buxWebSocketClientMock, atMostOnce()).sendMessage(captor.capture());
+    verify(buxWebSocketClientMock, timeout(1000).times(1)).sendMessage(captor.capture());
     assertThat(captor.getValue()).containsIgnoringCase("trading.product.productId");
-
   }
 
   @Test
-  void shouldStopStreaming_whenCannotSerializeBuxSubscription()
-      throws ExecutionException, InterruptedException {
+  void shouldStopStreaming_whenCannotSerializeBuxSubscription() {
 
     // GIVEN
     String productId = "productId";
@@ -82,19 +69,17 @@ class BuxMarketDataStreamingServiceImplTest {
     when(buxWebSocketClientMock.observeMessages()).thenReturn(Flowable.just(event));
     doThrow(RuntimeException.class).when(buxWebSocketClientMock).sendMessage(anyString());
 
-    CompletableFuture<Void> completableFuture =
-        marketDataStreamingService.startMarketDataStream(productId);
-    completableFuture.get();
+    marketDataStreamingService.startMarketDataStream(productId);
 
     // THEN
     ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-    verify(buxWebSocketClientMock, atMostOnce()).sendMessage(captor.capture());
-    verify(marketDataStreamingService, atMostOnce()).stopMarketDataStream();
+    verify(buxWebSocketClientMock, timeout(1000).times(1)).sendMessage(captor.capture());
+    verify(marketDataStreamingService, timeout(1000).times(1)).stopMarketDataStream();
   }
 
 
   @Test
-  void shouldHandleEveryBuxDomainEvent() throws ExecutionException, InterruptedException {
+  void shouldHandleEveryBuxDomainEvent() {
 
     // GIVEN
     String productId = "productId";
@@ -113,17 +98,15 @@ class BuxMarketDataStreamingServiceImplTest {
         spy(new BuxMarketDataStreamingServiceImpl(this.buxWebSocketClientMock,
             this.tradeStrategyMock));
 
-    CompletableFuture<Void> completableFuture =
-        marketDataStreamingService.startMarketDataStream(productId);
-    completableFuture.get();
+    marketDataStreamingService.startMarketDataStream(productId);
+
     // THEN
-    verify(this.tradeStrategyMock, times(2)).isFinished();
-    verify(this.tradeStrategyMock, atMostOnce()).onQuoteEvent(any());
+    verify(this.tradeStrategyMock, timeout(1000).times(2)).isFinished();
+    verify(this.tradeStrategyMock, timeout(1000).times(1)).onQuoteEvent(any());
   }
 
   @Test
-  void shouldStopStreamin_whenExecutionErrorOccurs()
-      throws ExecutionException, InterruptedException {
+  void shouldStopStreamin_whenExecutionErrorOccurs() {
 
     // GIVEN
     QuoteEvent event = mock(QuoteEvent.class);
@@ -135,12 +118,9 @@ class BuxMarketDataStreamingServiceImplTest {
     when(buxWebSocketClientMock.observeMessages()).thenReturn(Flowable.just(event));
     doThrow(RuntimeException.class).when(tradeStrategyMock).isFinished();
 
-    CompletableFuture<Void> completableFuture =
-        marketDataStreamingService.startMarketDataStream("productId");
-
-    completableFuture.get();
+    marketDataStreamingService.startMarketDataStream("productId");
 
     // THEN
-    verify(marketDataStreamingService, times(1)).stopMarketDataStream();
+    verify(marketDataStreamingService, timeout(1000).times(1)).stopMarketDataStream();
   }
 }
