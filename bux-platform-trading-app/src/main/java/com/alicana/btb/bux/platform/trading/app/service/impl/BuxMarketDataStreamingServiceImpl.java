@@ -67,7 +67,9 @@ public class BuxMarketDataStreamingServiceImpl implements MarketDataStreamingSer
       webSocketClientDisposable.dispose();
     }
 
-    this.completableFuture.complete(null);
+    if (!this.completableFuture.isDone()) {
+      this.completableFuture.complete(null);
+    }
   }
 
   private void handleBuxDomainEvent(final BuxDomainEvent event) {

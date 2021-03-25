@@ -73,8 +73,10 @@ class BuxMarketDataStreamingServiceImplTest {
 
     // THEN
     ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-    verify(buxWebSocketClientMock, timeout(1000).times(1)).sendMessage(captor.capture());
-    verify(marketDataStreamingService, timeout(1000).times(1)).stopMarketDataStream();
+    verify(buxWebSocketClientMock, timeout(200).times(1)).sendMessage(captor.capture());
+    assertThat(captor.getValue())
+        .isEqualTo("{\"subscribeTo\":[\"trading.product.productId\"],\"unsubscribeFrom\":[]}");
+    verify(marketDataStreamingService, timeout(200).atLeastOnce()).stopMarketDataStream();
   }
 
 
