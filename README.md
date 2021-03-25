@@ -1,6 +1,11 @@
+#### Status
+[![Build Status](https://travis-ci.com/alicanalbayrak/basic-trading-bot.svg?branch=main)](https://travis-ci.com/alicanalbayrak/basic-trading-bot)
+[![codecov](https://codecov.io/gh/alicanalbayrak/basic-trading-bot/branch/main/graph/badge.svg?token=47TTSSXEG1)](https://codecov.io/gh/alicanalbayrak/basic-trading-bot)
+
+
 ## Basic Trading Bot
 
-[![Build Status](https://travis-ci.com/alicanalbayrak/basic-trading-bot.svg?branch=main)](https://travis-ci.com/alicanalbayrak/basic-trading-bot)
+
 
 Very basic trading bot that tracks the price of a certain product and will execute a pre-defined trade in the said
 product when it reaches a given price. After the product has been bought the trading bot should keep on tracking the
